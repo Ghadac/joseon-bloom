@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import SectionHeading from "@/components/SectionHeading";
 import ProductCard from "@/components/ProductCard";
+import CommunitySection from "@/components/CommunitySection";
+import HowToUseSection from "@/components/HowToUseSection";
 import womenImg from "@/assets/women-category.jpg";
 import heroImg from "@/assets/hero-bg.jpg";
 
@@ -102,6 +104,11 @@ export default function Women() {
           </div>
         </div>
       </section>
+      {/* How to Use */}
+      <HowToUseSection />
+
+      {/* Community */}
+      <CommunitySection variant="women" />
     </Layout>
   );
 }

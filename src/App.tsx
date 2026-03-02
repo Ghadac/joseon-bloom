@@ -8,7 +8,9 @@ import Women from "./pages/Women";
 import Men from "./pages/Men";
 import Story from "./pages/Story";
 import SkinAnalysis from "./pages/SkinAnalysis";
+import ARStory from "./pages/ARStory";
 import NotFound from "./pages/NotFound";
+import VoiceAssistant from "./components/VoiceAssistant";
 
 const queryClient = new QueryClient();
 
@@ -24,8 +26,10 @@ const App = () => (
           <Route path="/men" element={<Men />} />
           <Route path="/story" element={<Story />} />
           <Route path="/skin-analysis" element={<SkinAnalysis />} />
+          <Route path="/ar-story" element={<ARStory />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <VoiceAssistant />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
