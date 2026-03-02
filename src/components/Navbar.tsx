@@ -9,9 +9,7 @@ const navLinks = [
   { name: "Men", path: "/men" },
   { name: "Skin Analysis", path: "/skin-analysis", icon: Sparkles },
   { name: "Our Story", path: "/story" },
-  { name: "Routine Builder", path: "/routines" },
   { name: "AR Story", path: "/ar-story" },
-  { name: "Community", path: "/community" },
 ];
 
 export default function Navbar() {
