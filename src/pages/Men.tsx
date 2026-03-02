@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import SectionHeading from "@/components/SectionHeading";
 import ProductCard from "@/components/ProductCard";
+import CommunitySection from "@/components/CommunitySection";
 import menImg from "@/assets/men-category.jpg";
 import heroImg from "@/assets/hero-bg.jpg";
 
@@ -101,6 +102,8 @@ export default function Men() {
           </div>
         </div>
       </section>
+      {/* Community */}
+      <CommunitySection variant="men" />
     </Layout>
   );
 }

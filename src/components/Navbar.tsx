@@ -10,6 +10,7 @@ const navLinks = [
   { name: "Skin Analysis", path: "/skin-analysis", icon: Sparkles },
   { name: "Our Story", path: "/story" },
   { name: "Routine Builder", path: "/routines" },
+  { name: "AR Story", path: "/ar-story" },
   { name: "Community", path: "/community" },
 ];
 
