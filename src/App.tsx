@@ -11,6 +11,7 @@ import SkinAnalysis from "./pages/SkinAnalysis";
 import ARStory from "./pages/ARStory";
 import NotFound from "./pages/NotFound";
 import VoiceAssistant from "./components/VoiceAssistant";
+import PostHogPageTracker from "./components/PostHogPageTracker";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PostHogPageTracker />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/women" element={<Women />} />
