@@ -4,6 +4,10 @@ import { ArrowRight, Sparkles, Leaf, Droplets } from "lucide-react";
 import Layout from "@/components/Layout";
 import SectionHeading from "@/components/SectionHeading";
 import ProductCard from "@/components/ProductCard";
+import HeroVariantA from "@/components/HeroVariantA";
+import HeroVariantB from "@/components/HeroVariantB";
+import SkinAnalysisCTAVariantB from "@/components/SkinAnalysisCTAVariantB";
+import { useFeatureFlag, trackABEvent } from "@/hooks/useFeatureFlag";
 import heroBg from "@/assets/hero-bg.jpg";
 import womenCat from "@/assets/women-category.jpg";
 import menCat from "@/assets/men-category.jpg";
@@ -31,62 +35,24 @@ const fadeUp = {
 };
 
 export default function Index() {
+  // PostHog feature flags for A/B testing
+  const heroVariant = useFeatureFlag('hero-ab-test');
+  const ctaVariant = useFeatureFlag('cta-ab-test');
+
+  const isHeroB = heroVariant === 'test';
+  const isCtaB = ctaVariant === 'test';
+
   return (
     <Layout>
-      {/* Hero */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="Beauty of Joseon collection" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/60 to-transparent" />
-        </div>
-        <div className="relative container mx-auto px-4 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-            className="max-w-xl"
-          >
-            <p className="font-body text-sm uppercase tracking-[0.3em] text-joseon-gold mb-4">
-              Inspired by Joseon Wisdom
-            </p>
-            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-light leading-tight text-foreground">
-              Timeless Skincare for Every Skin
-            </h1>
-            <p className="mt-5 font-body text-base text-muted-foreground leading-relaxed max-w-md">
-              Rooted in Korean heritage, powered by Hanbang ingredients.
-              Discover the beauty secrets of the Joseon dynasty.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                to="/women"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3 rounded-full font-body text-sm font-medium hover:shadow-glow-gold transition-all"
-              >
-                Shop Women <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/men"
-                className="inline-flex items-center gap-2 border border-foreground/20 text-foreground px-7 py-3 rounded-full font-body text-sm font-medium hover:border-joseon-gold hover:text-joseon-gold transition-all"
-              >
-                Shop Men <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Hero — A/B Test */}
+      {isHeroB ? <HeroVariantB /> : <HeroVariantA />}
 
       {/* Categories */}
       <section className="py-20 lg:py-28">
         <div className="container mx-auto px-4 lg:px-8">
           <SectionHeading title="Explore Our Collections" subtitle="Skincare crafted for every journey" />
           <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {/* Women */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={0}
-            >
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
               <Link to="/women" className="group relative block aspect-[4/5] rounded-2xl overflow-hidden shadow-soft">
                 <img src={womenCat} alt="Women collection" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
@@ -97,14 +63,7 @@ export default function Index() {
                 </div>
               </Link>
             </motion.div>
-            {/* Men */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={1}
-            >
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={1}>
               <Link to="/men" className="group relative block aspect-[4/5] rounded-2xl overflow-hidden shadow-soft">
                 <img src={menCat} alt="Men collection" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
@@ -125,15 +84,7 @@ export default function Index() {
           <SectionHeading title="Hanbang Heritage" subtitle="Ancient ingredients, modern science" />
           <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8">
             {ingredients.map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i}
-                className="text-center p-8"
-              >
+              <motion.div key={item.name} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i} className="text-center p-8">
                 <div className="w-14 h-14 mx-auto rounded-full bg-joseon-gold/10 flex items-center justify-center mb-5">
                   <item.icon className="w-6 h-6 text-joseon-gold" />
                 </div>
@@ -151,14 +102,7 @@ export default function Index() {
           <SectionHeading title="Bestsellers" subtitle="Loved by millions worldwide" />
           <div className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
             {featuredProducts.map((p, i) => (
-              <motion.div
-                key={p.name}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i}
-              >
+              <motion.div key={p.name} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
                 <ProductCard {...p} />
               </motion.div>
             ))}
@@ -171,57 +115,49 @@ export default function Index() {
         <img src={storyBg} alt="Joseon palace" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-foreground/40" />
         <div className="relative container mx-auto px-4 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-          >
-            <h2 className="font-serif text-3xl md:text-5xl text-primary-foreground font-light">
-              A Legacy of Beauty
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+            <h2 className="font-serif text-3xl md:text-5xl text-primary-foreground font-light">A Legacy of Beauty</h2>
             <p className="mt-4 font-body text-primary-foreground/80 max-w-lg mx-auto">
-              From the royal courts of the Joseon dynasty to your daily ritual.
-              Discover the story behind our timeless formulations.
+              From the royal courts of the Joseon dynasty to your daily ritual. Discover the story behind our timeless formulations.
             </p>
-            <Link
-              to="/story"
-              className="inline-flex items-center gap-2 mt-8 border border-primary-foreground/40 text-primary-foreground px-7 py-3 rounded-full font-body text-sm font-medium hover:bg-primary-foreground/10 transition-all"
-            >
+            <Link to="/story" className="inline-flex items-center gap-2 mt-8 border border-primary-foreground/40 text-primary-foreground px-7 py-3 rounded-full font-body text-sm font-medium hover:bg-primary-foreground/10 transition-all">
               Our Story <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* AI Skin Analysis CTA */}
-      <section className="py-20 lg:py-28">
-        <div className="container mx-auto px-4 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="bg-card rounded-3xl p-10 md:p-16 text-center shadow-soft"
-          >
-            <div className="w-16 h-16 mx-auto rounded-full bg-joseon-gold/10 flex items-center justify-center mb-6">
-              <Sparkles className="w-7 h-7 text-joseon-gold" />
-            </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-light text-foreground">
-              AI Skin Analysis
-            </h2>
-            <p className="mt-3 text-muted-foreground max-w-md mx-auto">
-              Let our intelligent skin diagnostic find the perfect routine for your unique skin type and concerns.
-            </p>
-            <Link
-              to="/skin-analysis"
-              className="inline-flex items-center gap-2 mt-8 bg-joseon-gold text-primary-foreground px-8 py-3 rounded-full font-body text-sm font-medium hover:shadow-glow-gold transition-all"
+      {/* AI Skin Analysis CTA — A/B Test */}
+      {isCtaB ? (
+        <SkinAnalysisCTAVariantB />
+      ) : (
+        <section className="py-20 lg:py-28">
+          <div className="container mx-auto px-4 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="bg-card rounded-3xl p-10 md:p-16 text-center shadow-soft"
             >
-              Analyze My Skin <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+              <div className="w-16 h-16 mx-auto rounded-full bg-joseon-gold/10 flex items-center justify-center mb-6">
+                <Sparkles className="w-7 h-7 text-joseon-gold" />
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl font-light text-foreground">AI Skin Analysis</h2>
+              <p className="mt-3 text-muted-foreground max-w-md mx-auto">
+                Let our intelligent skin diagnostic find the perfect routine for your unique skin type and concerns.
+              </p>
+              <Link
+                to="/skin-analysis"
+                onClick={() => trackABEvent('cta_click', { variant: 'A', cta: 'skin_analysis', position: 'bottom_cta' })}
+                className="inline-flex items-center gap-2 mt-8 bg-joseon-gold text-primary-foreground px-8 py-3 rounded-full font-body text-sm font-medium hover:shadow-glow-gold transition-all"
+              >
+                Analyze My Skin <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      )}
     </Layout>
   );
 }
